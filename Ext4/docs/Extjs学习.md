@@ -195,7 +195,7 @@ Ext.onReady(function() {
 
 多次点击按钮，会重复创建新的窗体。
 
-使用modal模态属性解决重复创建的问题。
+（1）使用modal模态属性解决重复创建的问题。
 
 ```js
 Ext.onReady(function() {
@@ -218,3 +218,115 @@ Ext.onReady(function() {
 ```
 
 ![image-20250806163334984](Extjs学习.assets/image-20250806163334984.png)
+
+（2）给组件增加唯一id,并且创建前判断组件是否存在。
+
+```js
+Ext.onReady(function() {
+			// 根据元素id获取元素,经过ext包装后的对象
+			var btn = Ext.get('btn');
+			// 获取元素的值
+			console.log(btn.dom.value);
+
+			// 给按钮元素绑定事件
+			btn.on('click', function() {
+						if (!Ext.getCmp('mywin')) {
+							Ext.create('Ext.window.Window', {
+										id : 'mywin',
+										title : '新窗体',
+										height : 300,
+										width : 400
+									}).show();
+						}
+					})
+		})
+```
+
+![image-20250807144519067](Extjs学习.assets/image-20250807144519067.png)
+
+##### 2.在组件中添加子组件
+
+主要是通过组件中的items配置项去添加
+
+```js
+ Ext.onReady(function() {
+			var win = new Ext.window.Window({
+						title : '新窗体',
+						height : 300,
+						width : 400,
+						draggable : false,// 不允许拖拽
+						resizable : false, // 不允许窗体改变大小
+						closable : false,// 不显示关闭按钮
+						collapsible : true,// 显示折叠窗体的按钮
+						bodyStyle : 'background:#ffc; padding:10px;',
+						html : '窗体内容',
+						// 配置子组件的配置项
+						items : [{
+								// Ext组件提供了一个简单的写法，xtype属性去创建属性
+									xtype : 'panel',
+									height : 100,
+									width : '50%',
+									html : '我是子组件-panel面板组件'
+								}, {
+									xtype : 'button',
+									text : '按钮',
+									//给按钮绑定事件
+									handler : function(btn) {
+										alert('被点击了');
+										alert(btn.text);
+									}
+								}]
+					});
+			win.show();
+		})
+```
+
+![image-20250807155225888](Extjs学习.assets/image-20250807155225888.png)
+
+![image-20250807155237095](Extjs学习.assets/image-20250807155237095.png)
+
+![image-20250807155247937](Extjs学习.assets/image-20250807155247937.png)
+
+##### 3.在组件中添加子组件,并对子组件进行一系列针的操作
+
+除了使用items添加子组件，还可以使用便捷的方式增加子组件，例如tbar
+
+![image-20250807155721699](Extjs学习.assets/image-20250807155721699.png)
+
+```js
+Ext.onReady(function() {
+			var win = new Ext.Window({
+						title : '操作组件的形式',
+						width : 500,
+						height : 300,
+						id: 'mywin',
+						// 在当前组件的top位置加一个工具条。
+						//bbar-底部左侧增加工具条 lbar-左侧增加工具条 rbar-右侧增加工具条 fbar-底部右侧增加工具条
+						tbar : [{
+									text : '按钮1',
+									handler : function(btn) {
+										//组件都会有up(向上查找)和down(向下查找)方法,需要的参数是组件的xtype或者选择器
+										//子组件获取父组件的信息-方式一
+										console.log('方式一，父组件window的title值:',btn.up('window').title);
+									}
+								}, {
+									text : '按钮2',
+									handler : function(btn) {
+										//子组件获取父组件的信息-方式二-常用:给父组件绑定id,通过getCmp获取组件信息
+										console.log('方式二，父组件window的title值',Ext.getCmp('mywin').title)
+									}
+								}, {
+									text : '按钮3',
+									handler : function(btn) {
+                                        //子组件获取父组件的信息-方式三,以上一级组件的形式去查找
+										console.log('方式三，父组件window的title值',btn.ownerCt.ownerCt.title)
+									}
+								}]
+					});
+					win.show();
+		})
+```
+
+![image-20250807155927057](Extjs学习.assets/image-20250807155927057.png)
+
+![image-20250807155937206](Extjs学习.assets/image-20250807155937206.png)
