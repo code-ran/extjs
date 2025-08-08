@@ -330,3 +330,187 @@ Ext.onReady(function() {
 ![image-20250807155927057](Extjs学习.assets/image-20250807155927057.png)
 
 ![image-20250807155937206](Extjs学习.assets/image-20250807155937206.png)
+
+##### 4.使用windowGroup对象去操作多个window窗口
+
+![image-20250808103734386](Extjs学习.assets/image-20250808103734386.png)
+
+```js
+Ext.onReady(function() {
+			var windowGroup = new Ext.WindowGroup();
+			// 创建五个window
+			for (var i = 1; i <= 5; i++) {
+				var win = new Ext.Window({
+							title : '第' + i + '个窗口',
+							id : 'win_' + i,
+							width : 300,
+							height : 300
+						});
+				win.show();
+				// 将窗体对象注册到ZindexManager
+				windowGroup.register(win);
+			}
+
+			var btn1 = Ext.create('Ext.button.Button', {
+						text : '全部隐藏',
+						// 将按钮渲染到body上去
+						renderTo : Ext.getBody(),
+						handler : function() {
+							// 隐藏所有被管理起来的window组件
+							windowGroup.hideAll();
+						}
+					});
+			var btn2 = Ext.create('Ext.button.Button', {
+						text : '全部显示',
+						// 将按钮渲染到body上去
+						renderTo : Ext.getBody(),
+						handler : function() {
+							// 显示所有被管理起来的window组件
+							windowGroup.each(function(win) {
+										win.show();
+									})
+						}
+					});
+
+			var btn3 = Ext.create('Ext.button.Button', {
+						text : '把第五个窗口显示在最后面',
+						// 将按钮渲染到body上去
+						renderTo : Ext.getBody(),
+						handler : function() {
+							// 显示所有被管理起来的window组件
+							windowGroup.sendToBack('win_5')
+						}
+					});
+		})
+```
+
+![GIF 2025-8-8 10-34-23](Extjs学习.assets/GIF 2025-8-8 10-34-23.gif)
+
+##### 5.Extjs创建类的流程
+
+###### （1）定义类的方法
+
+![image-20250808105137091](Extjs学习.assets/image-20250808105137091.png)
+
+```js
+Ext中去定义一类：Ext.define(className,properties,callback)
+className: 要定义的新类的类名
+properties: 新类的配置对象
+callback: 回调函数，当类创建完后执行该函数
+```
+
+![image-20250808105221155](Extjs学习.assets/image-20250808105221155.png)
+
+![image-20250808113113525](Extjs学习.assets/image-20250808113113525.png)
+
+```js
+Ext.onReady(function() {
+			// Ext中去定义一类：Ext.define(className,properties,callback)
+			Ext.define('Person', {
+						// 这里是对于这个类的一些配置信息
+						// config属性就是配置当前类的属性内容，并且会加上gt和set方法
+						config : {
+							name : 'z3',
+							age : 20
+						},
+						// 自己定义的方法
+						say : function() {
+							alert('方法')
+						},
+						// 给当前定义的类加一个构造器
+						constructor : function(config) {
+							// this指的是当前的类对象
+							var me = this;
+							// 初始化配置信息
+							me.initConfig(config);
+						}
+					});
+			// debugger;
+			//对象实例化
+			var p = Ext.create('Person', {
+						name : '王五',
+						age : 30
+					});
+			alert(p.getName());
+			alert(p.getAge());
+			p.say();
+		});
+```
+
+![GIF 2025-8-8 11-26-49](Extjs学习.assets/GIF 2025-8-8 11-26-49.gif)
+
+###### （2）Ext类的继承
+
+```js
+/**
+ * ext中类的继承extend
+ */
+ Ext.onReady(function() {
+ 	        //父类
+			Ext.define('Person', {
+						config : {
+							name : undefined
+						},
+						// 给当前定义的类加一个构造器
+						constructor : function(config) {
+							// this指的是当前的类对象
+							var me = this;
+							// 初始化配置信息
+							me.initConfig(config);
+						}
+					});
+            //子类
+			Ext.define('girl', {
+				        //继承Person类
+				        extend: 'Person',
+						config : {
+							age : undefined,
+							sex : 'woman'
+						}
+					});
+					//使用父类的构造方法
+		 var p1 = 	Ext.create('girl', {
+						name : '灵儿',
+						age : 20
+					});
+					console.log('name:',p1.name);
+					console.log('age:',p1.age);
+					console.log('sex:',p1.sex);
+					
+		})
+		
+```
+
+![image-20250808115012126](Extjs学习.assets/image-20250808115012126.png)
+
+###### （3）mixins
+
+```js
+/**
+ * 混合的配置项，可以多继承的配置
+ */		
+ Ext.onReady(function() {
+			Ext.define('Sing', {
+						canSing : function() {
+							console.log('canSing......')
+						}
+					});
+			Ext.define('Say', {
+						canSay : function() {
+							console.log('canSay......')
+						}
+					});
+			Ext.define('User', {
+						mixins : {
+							sing : 'Sing',
+							say : 'Say'
+						}
+					});
+			var user = Ext.create("User");
+			console.log(user.canSing())
+			console.log(user.canSay())
+		});		
+		
+```
+
+![image-20250808140958192](Extjs学习.assets/image-20250808140958192.png)

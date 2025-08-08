@@ -90,42 +90,52 @@
 /**
  * 使用windowGroup对象去操作多个window窗口
  */
-Ext.onReady(function() {
-			var windowGroup = new Ext.WindowGroup();
-			// 创建五个window
-			for (var i = 0; i < 5; i++) {
-				var win = new Ext.Window({
-							title : '第' + i + '个窗口',
-							id : 'win_' + i,
-							width : 300,
-							height : 300
-						});
-				win.show();
-				// 将窗体对象注册到ZindexManager
-				windowGroup.register(win);
-			}
-
-			var btn1 = Ext.create('Ext.button.Button', {
-						text : '全部隐藏',
-						// 将按钮渲染到body上去
-						renderTo:Ext.getBody(),
-						handler : function() {
-							// 隐藏所有被管理起来的window组件
-							windowGroup.hideAll();
-						}
-					});
-								var btn2 = Ext.create('Ext.button.Button', {
-						text : '全部显示',
-						// 将按钮渲染到body上去
-						renderTo:Ext.getBody(),
-						handler : function() {
-							// 显示所有被管理起来的window组件
-							windowGroup.each(function(win){
-							win.show();
-							})
-						}
-					});
-		})
+//Ext.onReady(function() {
+//			var windowGroup = new Ext.WindowGroup();
+//			// 创建五个window
+//			for (var i = 1; i <= 5; i++) {
+//				var win = new Ext.Window({
+//							title : '第' + i + '个窗口',
+//							id : 'win_' + i,
+//							width : 300,
+//							height : 300
+//						});
+//				win.show();
+//				// 将窗体对象注册到ZindexManager
+//				windowGroup.register(win);
+//			}
+//
+//			var btn1 = Ext.create('Ext.button.Button', {
+//						text : '全部隐藏',
+//						// 将按钮渲染到body上去
+//						renderTo : Ext.getBody(),
+//						handler : function() {
+//							// 隐藏所有被管理起来的window组件
+//							windowGroup.hideAll();
+//						}
+//					});
+//			var btn2 = Ext.create('Ext.button.Button', {
+//						text : '全部显示',
+//						// 将按钮渲染到body上去
+//						renderTo : Ext.getBody(),
+//						handler : function() {
+//							// 显示所有被管理起来的window组件
+//							windowGroup.each(function(win) {
+//										win.show();
+//									})
+//						}
+//					});
+//
+//			var btn3 = Ext.create('Ext.button.Button', {
+//						text : '把第五个窗口显示在最后面',
+//						// 将按钮渲染到body上去
+//						renderTo : Ext.getBody(),
+//						handler : function() {
+//							// 显示所有被管理起来的window组件
+//							windowGroup.sendToBack('win_5')
+//						}
+//					});
+//		})
 
 
 
