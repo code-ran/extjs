@@ -219,7 +219,7 @@ Ext.onReady(function() {
 
 ![image-20250806163334984](Extjs学习.assets/image-20250806163334984.png)
 
-（2）给组件增加唯一id,并且创建前判断组件是否存在。
+（2）给组件增加唯一id,并且创建前判断组件是否存在。解决重复创建的问题。
 
 ```js
 Ext.onReady(function() {
@@ -393,7 +393,7 @@ Ext.onReady(function() {
 ![image-20250808105137091](Extjs学习.assets/image-20250808105137091.png)
 
 ```js
-Ext中去定义一类：Ext.define(className,properties,callback)
+Ext中去定义类：Ext.define(className,properties,callback)
 className: 要定义的新类的类名
 properties: 新类的配置对象
 callback: 回调函数，当类创建完后执行该函数
@@ -514,3 +514,20 @@ Ext.onReady(function() {
 ```
 
 ![image-20250808140958192](Extjs学习.assets/image-20250808140958192.png)
+
+
+
+### Ext中对DOM的操作
+
+```
+Ext.Element(几乎对DOM的一切进行了彻底封装)
+Ext.DomHelper(他是一个强大的操控UI界面的工具类) Ext.DomQuery(用来进行DOM节点查询)
+```
+
+
+
+### Ext中数据处理
+
+#### 模型(Model)
+
+Ext.data.Model类结构和SQL中的表结构类似。每个Ext.data.Model类的实例表示一条数据库SQL记录
